@@ -1,1 +1,1 @@
-This repos consists of class notes of BVA 528E course
+This repo consists of class notes of BVA 528E course
