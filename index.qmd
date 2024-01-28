@@ -2,6 +2,4 @@
 title: "VIA528E"
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+- [Chapter 2 Introduction to PyTorch] (Introduction_to_Tensors.html)
