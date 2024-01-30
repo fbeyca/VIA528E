@@ -1,7 +1,6 @@
 ---
-title: "Untitled"
+title: "Introduction to Tensors"
 format: html
-embed-resources: true
 execute: 
   eval: false
 ---
