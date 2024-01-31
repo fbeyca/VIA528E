@@ -214,7 +214,7 @@
     "href": "Deep Learning for Tabular Data.html#multiple-linear-regression",
     "title": "Deep Learning for Tabular Data",
     "section": "Multiple Linear Regression",
-    "text": "Multiple Linear Regression\n\n\n\nLinear Regression as Deep Learning Architecture\n\n\n\\[\\hat{y}^i = w_1x^1 + w_2x^2 + ... + w_kx^k + b\\]\n\\[\\hat{y} = \\mathbf{xw} + b\\]\n\\[\\mathbf{\\hat{y}} = \\mathbf{Xw} + b\\]"
+    "text": "Multiple Linear Regression\n\n\n\nLinear Regression as Deep Learning Architecture\n\n\n\\[\\hat{y}^i = w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b\\]\n\\[\\hat{y} = \\mathbf{xw} + b\\]\n\\[\\mathbf{\\hat{y}} = \\mathbf{Xw} + b\\]"
   },
   {
     "objectID": "Deep Learning for Tabular Data.html#pytorch-implementation",
@@ -228,7 +228,7 @@
     "href": "Deep Learning for Tabular Data.html#cost-function",
     "title": "Deep Learning for Tabular Data",
     "section": "Cost Function",
-    "text": "Cost Function\n\\[ L(\\mathbf{w},b) =  \\frac{1}{n}\\sum_{i = 1}^n \\left({y^i - \\hat{y}^i}\\right)^2 \\] \\[ L(\\mathbf{w},b) =  \\frac{1}{n}\\sum_{i = 1}^n \\left({y^i - \\mathbf{x^iw}+b}\\right)^2 \\]"
+    "text": "Cost Function\n\\[ L(\\mathbf{w},b) =  \\frac{1}{n}\\sum_{i = 1}^n \\left({y^i - \\hat{y}^i}\\right)^2 \\] \\[ L(\\mathbf{w},b) =  \\frac{1}{n}\\sum_{i = 1}^n \\left({y^i - \\mathbf{x^iw}-b}\\right)^2 \\]"
   },
   {
     "objectID": "Deep Learning for Tabular Data.html#initialize-data",
@@ -299,5 +299,19 @@
     "title": "Deep Learning for Tabular Data",
     "section": "Binary Cross-entropy",
     "text": "Binary Cross-entropy\nBinary Cross-Entropy, often referred to as log loss, is a loss function commonly used in binary classification problems. It measures the difference between the true binary labels and the predicted probabilities for a binary classification task. The formula for binary cross-entropy for a single observation is:\n\\[L(y, \\hat{y}) = - (y \\cdot \\log(\\hat{y}) + (1 - y) \\cdot \\log(1 - \\hat{y}))\\]\n\n\\(L(y, \\hat{y})\\): Binary cross-entropy loss for a single observation.\n\\(y\\): The true label (ground truth), which is either 0 or 1.\n\\(\\hat{y}\\): The predicted probability that the instance belongs to class 1."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#logistic-regression-pytorch",
+    "href": "Deep Learning for Tabular Data.html#logistic-regression-pytorch",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Logistic Regression : PyTorch",
+    "text": "Logistic Regression : PyTorch\n\ndata = Data()\ncriterion = nn.BCELoss()\ntrainloader = DataLoader(dataset=data, batch_size=2)\nmdl = LR(input_size=2,output_size=1)\noptimizer = optim.SGD(mdl.parameters(), lr = 0.1)"
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#logistic-regression",
+    "href": "Deep Learning for Tabular Data.html#logistic-regression",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Logistic Regression",
+    "text": "Logistic Regression\n\n\n\nLogistic Regression\n\n\n\\[\\hat{z}^i =  w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b\\]\n\\[a^i = \\frac{1}{1 + e^{z^i}}\\]\n\\[\ny^i = \\begin{cases}\n1 & \\text{if } a^i &gt; 0.5 \\\\\n0 & \\text{if } a^i \\leq 0.5\n\\end{cases}\n\\]"
   }
 ]

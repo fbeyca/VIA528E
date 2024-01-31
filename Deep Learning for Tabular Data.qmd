@@ -15,7 +15,7 @@ embed-resources: true
 
 ![Linear Regression as Deep Learning Architecture](/images/LinearRegression.png){height=500 fig-align="left"}
 
-$$\hat{y}^i = w_1x^1 + w_2x^2 + ... + w_kx^k + b$$
+$$\hat{y}^i = w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b$$
 
 $$\hat{y} = \mathbf{xw} + b$$
 
@@ -52,7 +52,7 @@ class LR(nn.Module):
 ## Cost Function
 
 $$ L(\mathbf{w},b) =  \frac{1}{n}\sum_{i = 1}^n \left({y^i - \hat{y}^i}\right)^2 $$
-$$ L(\mathbf{w},b) =  \frac{1}{n}\sum_{i = 1}^n \left({y^i - \mathbf{x^iw}+b}\right)^2 $$
+$$ L(\mathbf{w},b) =  \frac{1}{n}\sum_{i = 1}^n \left({y^i - \mathbf{x^iw}-b}\right)^2 $$
 
 ## Initialize Data
 
@@ -183,13 +183,13 @@ print(mdl(X))
 $$ L(\mathbf{w,b}) =  \frac{1}{n}\sum_{i = 1}^n \left({||y^i - \mathbf{x^iw}+b}||\right)^2 $$
 
 
-## Logistic Regressipn
+## Logistic Regression
 
 
 ![Logistic Regression](/images/LogisticRegression.png){height=500 fig-align="left"}
 
 
-$$\hat{z}^i = w_1x^1 + w_2x^2 + ... + w_kx^k + b$$
+$$\hat{z}^i =  w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b$$
 
 $$a^i = \frac{1}{1 + e^{z^i}}$$
 
