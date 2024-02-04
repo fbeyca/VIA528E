@@ -114,102 +114,103 @@
   {
     "objectID": "Introduction_to_Tensors.html",
     "href": "Introduction_to_Tensors.html",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "",
     "text": "In the context of mathematics, physics, and computer science, a tensor is a mathematical object that generalizes the concept of vectors and matrices. Tensors can be thought of as multi-dimensional arrays or data structures that represent data in a way that is suitable for certain operations.\n\nA tensor’s order (or rank) defines the number of dimensions it has. For example:\n\nA scalar (0th-order tensor) is a single value.\nA vector (1st-order tensor) is an array of values.\nA matrix (2nd-order tensor) is a 2D array of values.\nTensors with three or more dimensions are higher-order tensors."
   },
   {
     "objectID": "Introduction_to_Tensors.html#tensors",
     "href": "Introduction_to_Tensors.html#tensors",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "",
     "text": "In the context of mathematics, physics, and computer science, a tensor is a mathematical object that generalizes the concept of vectors and matrices. Tensors can be thought of as multi-dimensional arrays or data structures that represent data in a way that is suitable for certain operations.\n\nA tensor’s order (or rank) defines the number of dimensions it has. For example:\n\nA scalar (0th-order tensor) is a single value.\nA vector (1st-order tensor) is an array of values.\nA matrix (2nd-order tensor) is a 2D array of values.\nTensors with three or more dimensions are higher-order tensors."
   },
   {
     "objectID": "Introduction_to_Tensors.html#derivatives",
     "href": "Introduction_to_Tensors.html#derivatives",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Derivatives",
     "text": "Derivatives\n\n\\(y = f(x = 2) = x ^ 2\\)\n\\(\\frac{d}{dx}f(x = 2) = 2x = 4\\)\n\n\nimport torch\n\nx = torch.tensor(2.0, requires_grad=True)\ny = x ** 2\ny.backward()\nprint(x.grad)"
   },
   {
     "objectID": "Introduction_to_Tensors.html#partial-derivatives",
     "href": "Introduction_to_Tensors.html#partial-derivatives",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Partial Derivatives",
     "text": "Partial Derivatives\n\n\\(y = f(u,v) = uv + u^2\\)\n\\(\\frac{d}{du}f(u,v) = v + 2u\\)\n\\(\\frac{d}{dv}f(u,v) = u\\)\n\n\nu = torch.tensor(1.0, requires_grad=True)\nv = torch.tensor(2.0, requires_grad=True)\ny = u*v + u **2\ny.backward()\nprint(u.grad)\nprint(v.grad)"
   },
   {
     "objectID": "Introduction_to_Tensors.html#linear-regression-problem-simple-linear-regression",
     "href": "Introduction_to_Tensors.html#linear-regression-problem-simple-linear-regression",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Linear Regression Problem (Simple Linear Regression)",
     "text": "Linear Regression Problem (Simple Linear Regression)\n\nLinear regression is a supervised learning algorithm used for predicting a continuous outcome.\nIt assumes a linear relationship between the independent variable(s) and the dependent variable.\nThe linear regression equation: \\(y = mx + b\\), where \\(m\\) is the slope and \\(b\\) is the intercept.\n\n\nfrom torch.nn import Linear\n\ntorch.manual_seed(1)\nmdl = Linear(in_features=1, out_features=1)\nprint(list(mdl.parameters()))\nx = torch.tensor([[0.0]])\nyhat = mdl(x)\nprint(yhat)"
   },
   {
     "objectID": "Introduction_to_Tensors.html#custom-model",
     "href": "Introduction_to_Tensors.html#custom-model",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Custom Model",
     "text": "Custom Model\n\nimport torch.nn as nn\n\nclass LR(nn.Module):\n    def __init__(self, in_size, out_size):\n        super(LR, self).__init__()\n        self.linear = nn.Linear(in_size,out_size)\n    \n    def forward(self, x):\n        out = self.linear(x)\n        return out\n\nThe provided code is a simple implementation of linear regression using PyTorch. Let’s break down the code step by step:\nHere, a class named LR (Linear Regression) is defined, which is a subclass of nn.Module. In PyTorch, neural network models are typically defined as classes that inherit from nn.Module. The __init__ method is used to initialize the model.\n\nin_size: Specifies the size of the input features (number of input neurons).\nout_size: Specifies the size of the output (number of output neurons).\n\nInside the __init__ method:\n\nsuper(LR, self).__init__() calls the constructor of the parent class (nn.Module) to initialize the module.\nself.linear = nn.Linear(in_size, out_size) creates a linear layer. The nn.Linear module represents a linear transformation, which includes weights and biases. It takes in_size as the number of input features and out_size as the number of output features.\n\nThe forward method defines the forward pass of the model. In PyTorch, the forward method is where you specify how input data should be passed through the network. Here:\n\nx is the input data.\nself.linear(x) applies the linear transformation to the input, which essentially computes (wx + b), where (w) is the weight matrix and (b) is the bias vector.\nThe result is stored in the variable out.\nThe method returns out, which represents the output of the linear regression model.\n\n\nlr = LR(1, 1)\n\nX= torch.tensor([[1.0], [2.0], [3.0]])\n\nyhat=lr(X)\nprint(yhat)"
   },
   {
     "objectID": "Introduction_to_Tensors.html#training-the-model",
     "href": "Introduction_to_Tensors.html#training-the-model",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Training the Model",
     "text": "Training the Model\n\n\\(D = {(x_1, y_1), ... , (x_N, y_N)}\\)\n\\(\\hat{y} = wx + b\\)"
   },
   {
     "objectID": "Introduction_to_Tensors.html#gradient-descent",
     "href": "Introduction_to_Tensors.html#gradient-descent",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Gradient Descent",
     "text": "Gradient Descent"
   },
   {
     "objectID": "Introduction_to_Tensors.html#gradient-descent-algorithm",
     "href": "Introduction_to_Tensors.html#gradient-descent-algorithm",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Gradient Descent Algorithm",
     "text": "Gradient Descent Algorithm\n\\[ L =  \\frac{1}{2n}\\sum_{i = 1}^n \\left({y^i - \\hat{y}^i}\\right)^2 \\]"
   },
   {
     "objectID": "Introduction_to_Tensors.html#gradient-descent-algorithm-1",
     "href": "Introduction_to_Tensors.html#gradient-descent-algorithm-1",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Gradient Descent Algorithm",
     "text": "Gradient Descent Algorithm\n\\[\\beta^{\\text{new}} = \\beta^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta}\\]\n\\[\\begin{aligned}\n\n\\frac{\\partial L}{\\partial \\beta_1} & = \\frac{\\partial}{\\partial \\beta_1} \\frac{1}{2n}\\sum_{i = 1}^n \\left({y^i - \\hat{y}^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_1}  \\left({y^i - \\hat{y}^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_1}  \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right)^2 \\\\\n\n\\end{aligned}\\]"
   },
   {
     "objectID": "Introduction_to_Tensors.html#taking-derivatives",
     "href": "Introduction_to_Tensors.html#taking-derivatives",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Taking Derivatives",
     "text": "Taking Derivatives\n\\[\\begin{aligned}\n\n\\frac{\\partial L}{\\partial \\beta_1} & = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_1}  \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n} * 2 \\sum_{i = 1}^n \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right) \\left({-x^i}\\right) \\\\\n\n& = \\frac{1}{n} \\sum_{i = 1}^n \\left({e^i}\\right) \\left({-x^i}\\right) \\\\\n\n\\end{aligned}\\]"
   },
   {
     "objectID": "Introduction_to_Tensors.html#taking-derivatives-1",
     "href": "Introduction_to_Tensors.html#taking-derivatives-1",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Taking Derivatives",
     "text": "Taking Derivatives\n\\[\\begin{aligned}\n\n\\frac{\\partial L}{\\partial \\beta_0} & = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_0}  \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n} * 2 \\sum_{i = 1}^n \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right) \\left({-1}\\right) \\\\\n\n& = \\frac{1}{n} \\sum_{i = 1}^n \\left({e^i}\\right) \\left({-1}\\right) \\\\\n\n\\end{aligned}\\]"
   },
   {
     "objectID": "Introduction_to_Tensors.html#updating-derivatives",
     "href": "Introduction_to_Tensors.html#updating-derivatives",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "Updating Derivatives",
     "text": "Updating Derivatives\n\\[\\beta^{\\text{new}} = \\beta^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta}\\]\n\\[\\beta_1^{\\text{new}} = \\beta_1^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta_1}\\]\n\\[\\beta_0^{\\text{new}} = \\beta_0^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta_0}\\]"
   },
   {
     "objectID": "Introduction_to_Tensors.html#pytorch-example",
     "href": "Introduction_to_Tensors.html#pytorch-example",
-    "title": "Untitled",
+    "title": "Introduction to Tensors",
     "section": "PyTorch example",
     "text": "PyTorch example\n\nInitialize Data\n\nimport torch\nimport matplotlib.pyplot as plt\n\nw = torch.tensor(-5.0, requires_grad=True)\nb = torch.tensor(0.0, requires_grad=True)\nX = torch.linspace(-3,3,steps = 10).view(-1,1)\ny = -3 * X + 2 + torch.randn(size = X.size())\n\nplt.plot(X.numpy(), y.numpy(),\"ob\")\nplt.grid()\n\n\n\nPerform Prediction\n\ndef forward(x):\n    return w*x + b\n\ndef criterion(yhat, y):\n    return torch.mean((yhat-y)**2)\n\nypred = forward(X)\nprint(criterion(ypred, y))\n\nplt.plot(X.numpy(), y.numpy(),\"ob\")\nplt.plot(X.numpy(), ypred.data.numpy(),\"-r\")\nplt.grid()\n\n\n\nGradient Descent\n\nlr = 0.1\ncost = []\nfor i in range(10):\n    ypred = forward(X)\n    loss = criterion(ypred, y)\n    loss.backward()\n    w.data = w.data - lr*w.grad.data\n    b.data = b.data - lr*b.grad.data\n    w.grad.data.zero_()\n    b.grad.data.zero_()\n    cost.append(loss.item())\n\nprint(loss)\nprint(w.grad)\nprint(b.grad)\nplt.plot(X.numpy(), y.numpy(),\"ob\")\nplt.plot(X.numpy(), ypred.data.numpy(),\"-r\")\nplt.grid()\n\nplt.figure()\nplt.plot(cost, \"-*b\")\nplt.grid()\nplt.xlabel(\"Iteration\")\nplt.ylabel(\"Loss value\")\n\n\n\nStochastic Gradient Descent\n\nlr = 0.01\ncost = []\nfor i in range(10):\n    total = 0 \n    for x_,y_ in zip(X,y):\n        ypred = forward(x_)\n        loss = criterion(ypred, y_)\n        loss.backward()\n        w.data = w.data - lr*w.grad.data\n        b.data = b.data - lr*b.grad.data\n        w.grad.data.zero_()\n        b.grad.data.zero_()\n        total += loss.item()\n    cost.append(total)\nprint(loss)\nprint(w.grad)\nprint(b.grad)\n\nplt.figure()\nplt.plot(cost, \"-*b\")\nplt.grid()\nplt.xlabel(\"Iteration\")\nplt.ylabel(\"Loss value\")\n\n\n\nDataset Loader Module\n\nfrom torch.utils.data import Dataset, DataLoader\n\nclass Data(Dataset):\n    def __init__(self, X, y):\n        self.x = X\n        self.y = y\n        self.len = X.shape[0]\n    \n    def __getitem__(self, index):\n        return self.x[index], self.y[index]\n\n    def __len__(self):\n        return self.len\n\ndataset = Data(X,y)\nx,y = dataset[:3]\nprint(x)\nprint(y)\n\n\n\nMiniBatch Gradient Descent\n\ntrainloader = DataLoader(dataset=dataset, batch_size=5)\nlr = 0.1\ncost = []\nfor i in range(10):\n    total = 0 \n    for x_,y_ in trainloader:\n        ypred = forward(x_)\n        loss = criterion(ypred, y_)\n        loss.backward()\n        w.data = w.data - lr*w.grad.data\n        b.data = b.data - lr*b.grad.data\n        w.grad.data.zero_()\n        b.grad.data.zero_()\n        total += loss.item()\n    cost.append(total)\nprint(loss)\nprint(w.grad)\nprint(b.grad)\n\n\nplt.figure()\nplt.plot(cost, \"-*b\")\nplt.grid()\nplt.xlabel(\"Iteration\")\nplt.ylabel(\"Loss value\")"
   },
   {
+<<<<<<< HEAD
     "objectID": "Introduction-to-Tensors.html",
     "href": "Introduction-to-Tensors.html",
     "title": "Untitled",
@@ -306,5 +307,110 @@
     "title": "Untitled",
     "section": "PyTorch example",
     "text": "PyTorch example\nInitialize Data\nPerform Prediction\nGradient Descent\nStochastic Gradient Descent\nDataset Loader Module\nMiniBatch Gradient Descent"
+=======
+    "objectID": "Deep Learning for Tabular Data.html#multiple-linear-regression",
+    "href": "Deep Learning for Tabular Data.html#multiple-linear-regression",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Multiple Linear Regression",
+    "text": "Multiple Linear Regression\n\n\n\nLinear Regression as Deep Learning Architecture\n\n\n\\[\\hat{y}^i = w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b\\]\n\\[\\hat{y} = \\mathbf{xw} + b\\]\n\\[\\mathbf{\\hat{y}} = \\mathbf{Xw} + b\\]"
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#pytorch-implementation",
+    "href": "Deep Learning for Tabular Data.html#pytorch-implementation",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Pytorch Implementation",
+    "text": "Pytorch Implementation\n\nimport torch\nfrom torch.nn import Linear\n\n\ntorch.manual_seed(1)\nmdl = Linear(in_features=2,out_features=1)\nlist(mdl.parameters())\nX = torch.rand(size=(3,2))\nprint(mdl(X))\n\ntensor([[ 0.1215],\n        [ 0.0304],\n        [-0.0400]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\nCustom Module\nIn PyTorch it is customary to construct custom modules\n\nimport torch.nn as nn\n\nclass LR(nn.Module):\n    def __init__(self, input_size, output_size):\n        super(LR, self).__init__()\n        self.linear = nn.Linear(input_size, output_size)\n\n    def forward(self, x):\n        return self.linear(x)"
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#cost-function",
+    "href": "Deep Learning for Tabular Data.html#cost-function",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Cost Function",
+    "text": "Cost Function\n\\[ L(\\mathbf{w},b) =  \\frac{1}{n}\\sum_{i = 1}^n \\left({y^i - \\hat{y}^i}\\right)^2 \\] \\[ L(\\mathbf{w},b) =  \\frac{1}{n}\\sum_{i = 1}^n \\left({y^i - \\mathbf{x^iw}-b}\\right)^2 \\]"
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#initialize-data",
+    "href": "Deep Learning for Tabular Data.html#initialize-data",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Initialize Data",
+    "text": "Initialize Data\n\nfrom torch.utils.data import Dataset, DataLoader\n\nclass Data(Dataset):\n    def __init__(self):\n        self.x = torch.zeros(20,2)\n        self.x[:,0] = torch.arange(-1,1,0.1)\n        self.x[:,1] = torch.arange(-1,1,0.1)\n        self.w = torch.tensor([[1.0],[1.0]])\n        self.b = 1\n        self.f = torch.mm(self.x, self.w) + self.b\n        self.y = self.f + 0.1*torch.randn(self.f.shape)\n        self.len = self.x.shape[0]\n    \n    def __getitem__(self, index):\n        return self.x[index], self.y[index]\n\n    def __len__(self):\n        return self.len\n\nThis code defines the Data class, which inherits from the Dataset class in PyTorch. The constructor (__init__) initializes various attributes of the dataset.\n\nself.x[:, 0] = torch.arange(-1, 1, 0.1) and self.x[:, 1] = torch.arange(-1, 1, 0.1): It initializes a 2-dimensional tensor self.x with values ranging from -1 to 1 with a step of 0.1 in both dimensions.\nself.w = torch.tensor([[1.0], [1.0]]): It initializes a weight tensor self.w with values [1.0] in both dimensions.\nself.b = 1: It initializes a bias term self.b with a value of 1.\nself.f = torch.mm(self.x, self.w) + self.b: It calculates the linear function self.f using matrix multiplication (torch.mm) between self.x and self.w, and then adding the bias term self.b.\nself.y = self.f + 0.1 * torch.randn(self.f.shape): It adds random noise to the calculated function self.f to create the target values self.y. This simulates a scenario where real-world data may have some level of noise.\nself.len = self.x.shape[0]: It sets the length of the dataset (self.len) based on the number of rows in self.x."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#initializing-model-parameters",
+    "href": "Deep Learning for Tabular Data.html#initializing-model-parameters",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Initializing Model Parameters",
+    "text": "Initializing Model Parameters\n\nfrom torch import optim\ndata = Data()\ncriterion = nn.MSELoss()\ntrainloader = DataLoader(dataset=data, batch_size=2)\nmdl = LR(input_size=2,output_size=1)\noptimizer = optim.SGD(mdl.parameters(), lr = 0.1)\n\n\nAn instance of the Data class is created (data).\nThe mean squared error loss (criterion) is instantiated using nn.MSELoss().\nA DataLoader (trainloader) is created to handle batches of size 2 during training.\nAn instance of the linear regression model (mdl) is created using the LR class with an input size of 2 and an output size of 1.\nAn SGD optimizer that will update the parameters of the mdl during training, using a learning rate of 0.1 is created. This optimizer will be used in the training loop to update the model parameters based on the computed gradients during backpropagation."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#training-model",
+    "href": "Deep Learning for Tabular Data.html#training-model",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Training Model",
+    "text": "Training Model\n\n\n\ncost =  []\nfor epoch in range(100):\n    for x,y in trainloader:\n        yhat = mdl(x)\n        loss = criterion(yhat,y)\n        cost.append(loss.data)\n        optimizer.zero_grad()\n        loss.backward()\n        optimizer.step()\n\n\n\nimport matplotlib.pyplot as plt\nplt.plot(cost)\nplt.grid()\n\n\n\n\n\n\n\nfor x, y in trainloader:: This inner loop iterates over batches of data from the trainloader. Each iteration provides a batch of input (x) and target (y) tensors.\nyhat = mdl(x): This line computes the model’s predictions (yhat) given the input (x) using the forward pass of the model.\nloss = criterion(yhat, y): This calculates the loss using the mean squared error (MSE) criterion. The difference between the predicted values (yhat) and the actual target values (y) is computed and squared, and the mean of these squared differences is taken.\ncost.append(loss): The calculated loss for the current batch is appended to the cost list. This allows you to track the change in loss during training.\noptimizer.zero_grad(): This resets the gradients of the model parameters to zero. Gradients accumulate by default in PyTorch, so it’s necessary to clear them before computing new gradients.\nloss.backward(): This computes the gradients of the model parameters with respect to the loss using backpropagation.\noptimizer.step(): This updates the model parameters using the optimizer. The optimizer uses the computed gradients to perform a step in the direction that minimizes the loss."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#linear-regression-with-multiple-outputs",
+    "href": "Deep Learning for Tabular Data.html#linear-regression-with-multiple-outputs",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Linear Regression with Multiple Outputs",
+    "text": "Linear Regression with Multiple Outputs\n\n\n\nLinear Regression with Multiple Outputs\n\n\n\\[\\mathbf{y}_{nxk} = \\mathbf{X}_{nxm}\\mathbf{W}_{mxk} + \\mathbf{b}_{1xk}\\]\n\ntorch.manual_seed(1)\nmdl = Linear(in_features=2,out_features=2)\nlist(mdl.parameters())\nX = torch.rand(size=(3,2))\nprint(mdl(X))\n\ntensor([[-0.7564,  0.6200],\n        [-0.5951,  0.4916],\n        [-0.5967,  0.5106]], grad_fn=&lt;AddmmBackward0&gt;)\n\n\n\\[ L(\\mathbf{w,b}) =  \\frac{1}{n}\\sum_{i = 1}^n \\left({||y^i - \\mathbf{x^iw}+b}||\\right)^2 \\]"
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#logistic-regressipn",
+    "href": "Deep Learning for Tabular Data.html#logistic-regressipn",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Logistic Regressipn",
+    "text": "Logistic Regressipn\n\n\n\nLogistic Regression\n\n\n\\[\\hat{z}^i = w_1x^1 + w_2x^2 + ... + w_kx^k + b\\]\n\\[a^i = \\frac{1}{1 + e^{z^i}}\\]\n\\[\ny^i = \\begin{cases}\n1 & \\text{if } a^i &gt; 0.5 \\\\\n0 & \\text{if } a^i \\leq 0.5\n\\end{cases}\n\\]"
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#logistic-regression-in-pytorch",
+    "href": "Deep Learning for Tabular Data.html#logistic-regression-in-pytorch",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Logistic Regression in PyTorch",
+    "text": "Logistic Regression in PyTorch\n\nclass LogisticRegression(nn.Module):\n    def __init__(self, input_size):\n        super(LogisticRegression, self).__init__()\n        self.linear = nn.Linear(input_size, 1)\n\n    def forward(self, x):\n        z = self.linear(x)\n        a = torch.sigmoid(z)\n        return a\n\n\nself.linear = nn.Linear(input_size, 1): This line creates a linear layer (nn.Linear) as a member of the class. It represents the linear transformation (weight * input + bias) with input_size input features and 1 output feature, which is typical for logistic regression.\nz = self.linear(x): This line applies the linear transformation to the input x using the weights and biases defined in the self.linear layer. The result is stored in z.\na = torch.sigmoid(z): The logistic sigmoid function (torch.sigmoid) is applied to the linear output z. This operation squashes the values between 0 and 1, which is common in logistic regression, providing the probability of belonging to the positive class."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#bernoulli-distribution",
+    "href": "Deep Learning for Tabular Data.html#bernoulli-distribution",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Bernoulli Distribution",
+    "text": "Bernoulli Distribution\nThe Bernoulli distribution is a discrete probability distribution for a random variable that can take only two possible outcomes, usually labeled as 0 and 1. It’s commonly used to model binary events, where 0 might represent failure or a “no” outcome, and 1 represents success or a “yes” outcome.\nThe probability mass function (PMF) of a Bernoulli distribution is defined as follows:\n\\[P(X = k) =\n\\begin{cases}\np & \\text{if } k = 1 \\\\\nq = 1 - p & \\text{if } k = 0\n\\end{cases}\n\\]\nHere, \\(p\\) is the probability of success (getting a 1), and \\(q\\) is the probability of failure (getting a 0). The distribution is parameterized by \\(p\\), and it’s often written as \\(Bernoulli(p)\\)."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#maximum-likelihood-estimation-mle",
+    "href": "Deep Learning for Tabular Data.html#maximum-likelihood-estimation-mle",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Maximum Likelihood Estimation (MLE)",
+    "text": "Maximum Likelihood Estimation (MLE)\nMaximum Likelihood Estimation is a method used for estimating the parameters of a statistical model. The idea is to find the values of the model parameters that maximize the likelihood function, which measures how well the model explains the observed data.\nGiven a set of observations \\(x_1, x_2, ..., x_n\\) assumed to be independent and identically distributed (i.i.d.) according to some probability distribution with parameters \\(\\theta\\), the likelihood function is defined as the product of the probability density (or mass) functions of the individual observations:\n\\[L(\\theta | x_1, x_2, ..., x_n) = P(x_1|\\theta) \\times P(x_2|\\theta) \\times \\ldots \\times P(x_n|\\theta)\\]\nThe goal of MLE is to find the values of \\(\\theta\\) that maximize this likelihood function. In practice, it is often more convenient to work with the log-likelihood function (logarithm of the likelihood function), denoted as \\(l(\\theta)\\), as it simplifies calculations and does not change the location of the maximum:\n\\[l(\\theta | x_1, x_2, ..., x_n) = \\log L(\\theta | x_1, x_2, ..., x_n)\\]\nFinding the maximum of \\(l(\\theta)\\) is equivalent to finding the maximum of \\(L(\\theta)\\), and this is often done using optimization techniques."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#maximum-likelihood-estimation-of-bernouilli-distribution",
+    "href": "Deep Learning for Tabular Data.html#maximum-likelihood-estimation-of-bernouilli-distribution",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Maximum Likelihood Estimation of Bernouilli Distribution",
+    "text": "Maximum Likelihood Estimation of Bernouilli Distribution\nWe want to estimate the probability \\(p\\) of getting heads (success) in a single flip, assuming a Bernoulli distribution.\nSuppose we conduct an experiment where we flip a coin 10 times and observe the following outcomes: 1, 0, 1, 1, 0, 1, 1, 0, 0, 1 (1 representing heads, 0 representing tails).\nThe likelihood function for a Bernoulli distribution is given by:\n\\(L(p | x_1, x_2, ..., x_n) = p^{x_1} \\cdot (1-p)^{x_2} \\cdot \\ldots \\cdot p^{x_n}\\)\nIn this case, the likelihood function becomes:\n\\(L(p) = p \\cdot (1-p) \\cdot p \\cdot p \\cdot (1-p) \\cdot p \\cdot p \\cdot (1-p) \\cdot (1-p) \\cdot p\\)\nNow, taking the log-likelihood function:\n\\(l(p) = \\log L(p) = \\log(p) + \\log(1-p) + \\log(p) + \\log(p) + \\log(1-p) + \\log(p) + \\log(p) + \\log(1-p) + \\log(1-p) + \\log(p)\\)\nTo find the maximum likelihood estimate (MLE) of \\(p\\), we differentiate \\(l(p)\\) with respect to \\(p\\), set the result to zero, and solve for \\(p\\). However, in practice, optimization libraries are often used to find the maximum.\nLet’s perform a simplified calculation to illustrate:\n\\(\\frac{dl}{dp} = \\frac{1}{p} - \\frac{1}{1-p} + \\frac{1}{p} + \\frac{1}{p} - \\frac{1}{1-p} + \\frac{1}{p} + \\frac{1}{p} - \\frac{1}{1-p} - \\frac{1}{1-p} + \\frac{1}{p}\\)\nSetting the derivative to zero, we get:\n\\(\\frac{1}{p} - \\frac{1}{1-p} + \\frac{1}{p} + \\frac{1}{p} - \\frac{1}{1-p} + \\frac{1}{p} + \\frac{1}{p} - \\frac{1}{1-p} - \\frac{1}{1-p} + \\frac{1}{p} = 0\\)\nSolving this equation would give the MLE for \\(p\\).\nIn practice, using PyTorch, you might use an optimizer like stochastic gradient descent to find the maximum of the log-likelihood function. The result would be the MLE for \\(p\\)."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#binary-cross-entropy",
+    "href": "Deep Learning for Tabular Data.html#binary-cross-entropy",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Binary Cross-entropy",
+    "text": "Binary Cross-entropy\nBinary Cross-Entropy, often referred to as log loss, is a loss function commonly used in binary classification problems. It measures the difference between the true binary labels and the predicted probabilities for a binary classification task. The formula for binary cross-entropy for a single observation is:\n\\[L(y, \\hat{y}) = - (y \\cdot \\log(\\hat{y}) + (1 - y) \\cdot \\log(1 - \\hat{y}))\\]\n\n\\(L(y, \\hat{y})\\): Binary cross-entropy loss for a single observation.\n\\(y\\): The true label (ground truth), which is either 0 or 1.\n\\(\\hat{y}\\): The predicted probability that the instance belongs to class 1."
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#logistic-regression-pytorch",
+    "href": "Deep Learning for Tabular Data.html#logistic-regression-pytorch",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Logistic Regression : PyTorch",
+    "text": "Logistic Regression : PyTorch\n\ndata = Data()\ncriterion = nn.BCELoss()\ntrainloader = DataLoader(dataset=data, batch_size=2)\nmdl = LR(input_size=2,output_size=1)\noptimizer = optim.SGD(mdl.parameters(), lr = 0.1)"
+  },
+  {
+    "objectID": "Deep Learning for Tabular Data.html#logistic-regression",
+    "href": "Deep Learning for Tabular Data.html#logistic-regression",
+    "title": "Deep Learning for Tabular Data",
+    "section": "Logistic Regression",
+    "text": "Logistic Regression\n\n\n\nLogistic Regression\n\n\n\\[\\hat{z}^i =  w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b\\]\n\\[a^i = \\frac{1}{1 + e^{z^i}}\\]\n\\[\ny^i = \\begin{cases}\n1 & \\text{if } a^i &gt; 0.5 \\\\\n0 & \\text{if } a^i \\leq 0.5\n\\end{cases}\n\\]"
+>>>>>>> 2096d82e1dbfb12fd7b5f9e3e3af1157d351d7a3
   }
 ]

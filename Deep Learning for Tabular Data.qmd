@@ -1,0 +1,247 @@
+---
+title: "Deep Learning for Tabular Data"
+format: 
+    revealjs:
+        width: 1920
+        height: 1080
+execute: 
+  echo: true
+  eval: true
+
+embed-resources: true
+---
+
+## Multiple Linear Regression
+
+![Linear Regression as Deep Learning Architecture](/images/LinearRegression.png){height=500 fig-align="left"}
+
+$$\hat{y}^i = w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b$$
+
+$$\hat{y} = \mathbf{xw} + b$$
+
+$$\mathbf{\hat{y}} = \mathbf{Xw} + b$$
+
+## Pytorch Implementation
+```{python}
+import torch
+from torch.nn import Linear
+
+
+torch.manual_seed(1)
+mdl = Linear(in_features=2,out_features=1)
+list(mdl.parameters())
+X = torch.rand(size=(3,2))
+print(mdl(X))
+
+```
+
+### Custom Module
+In PyTorch it is customary to construct custom modules
+```{python}
+import torch.nn as nn
+
+class LR(nn.Module):
+    def __init__(self, input_size, output_size):
+        super(LR, self).__init__()
+        self.linear = nn.Linear(input_size, output_size)
+
+    def forward(self, x):
+        return self.linear(x)
+```
+
+## Cost Function
+
+$$ L(\mathbf{w},b) =  \frac{1}{n}\sum_{i = 1}^n \left({y^i - \hat{y}^i}\right)^2 $$
+$$ L(\mathbf{w},b) =  \frac{1}{n}\sum_{i = 1}^n \left({y^i - \mathbf{x^iw}-b}\right)^2 $$
+
+## Initialize Data
+
+```{python}
+from torch.utils.data import Dataset, DataLoader
+
+class Data(Dataset):
+    def __init__(self):
+        self.x = torch.zeros(20,2)
+        self.x[:,0] = torch.arange(-1,1,0.1)
+        self.x[:,1] = torch.arange(-1,1,0.1)
+        self.w = torch.tensor([[1.0],[1.0]])
+        self.b = 1
+        self.f = torch.mm(self.x, self.w) + self.b
+        self.y = self.f + 0.1*torch.randn(self.f.shape)
+        self.len = self.x.shape[0]
+    
+    def __getitem__(self, index):
+        return self.x[index], self.y[index]
+
+    def __len__(self):
+        return self.len
+```
+
+This code defines the `Data` class, which inherits from the `Dataset` class in PyTorch. The constructor (`__init__`) initializes various attributes of the dataset.
+
+- `self.x[:, 0] = torch.arange(-1, 1, 0.1)` and `self.x[:, 1] = torch.arange(-1, 1, 0.1)`: It initializes a 2-dimensional tensor `self.x` with values ranging from -1 to 1 with a step of 0.1 in both dimensions.
+
+- `self.w = torch.tensor([[1.0], [1.0]])`: It initializes a weight tensor `self.w` with values `[1.0]` in both dimensions.
+
+- `self.b = 1`: It initializes a bias term `self.b` with a value of 1.
+
+- `self.f = torch.mm(self.x, self.w) + self.b`: It calculates the linear function `self.f` using matrix multiplication (`torch.mm`) between `self.x` and `self.w`, and then adding the bias term `self.b`.
+
+- `self.y = self.f + 0.1 * torch.randn(self.f.shape)`: It adds random noise to the calculated function `self.f` to create the target values `self.y`. This simulates a scenario where real-world data may have some level of noise.
+
+- `self.len = self.x.shape[0]`: It sets the length of the dataset (`self.len`) based on the number of rows in `self.x`.
+---
+
+```python
+def __getitem__(self, index):
+    return self.x[index], self.y[index]
+```
+
+This method, `__getitem__`, is required by the `Dataset` class. It is used to retrieve a specific sample from the dataset given an index. In this case, it returns a tuple containing input (`self.x[index]`) and target (`self.y[index]`) values for the given index.
+
+```python
+def __len__(self):
+    return self.len
+```
+
+This method, `__len__`, is also required by the `Dataset` class. It returns the length of the dataset, which was set during initialization as `self.len`.
+
+## Initializing Model Parameters
+
+```{python}
+from torch import optim
+data = Data()
+criterion = nn.MSELoss()
+trainloader = DataLoader(dataset=data, batch_size=2)
+mdl = LR(input_size=2,output_size=1)
+optimizer = optim.SGD(mdl.parameters(), lr = 0.1)
+```
+
+- An instance of the `Data` class is created (`data`). 
+- The mean squared error loss (`criterion`) is instantiated using `nn.MSELoss()`.
+- A `DataLoader` (`trainloader`) is created to handle batches of size 2 during training.
+- An instance of the linear regression model (`mdl`) is created using the `LR` class with an input size of 2 and an output size of 1.
+- An `SGD optimizer` that will update the parameters of the `mdl` during training, using a learning rate of 0.1 is created. This optimizer will be used in the training loop to update the model parameters based on the computed gradients during backpropagation.
+
+## Training Model
+
+
+:::: {.columns}
+::: {.column width="50%"}
+```{python}
+cost =  []
+for epoch in range(100):
+    for x,y in trainloader:
+        yhat = mdl(x)
+        loss = criterion(yhat,y)
+        cost.append(loss.data)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+```
+:::
+
+::: {.column width="50%"}
+```{python}
+import matplotlib.pyplot as plt
+plt.plot(cost)
+plt.grid()
+```
+:::
+::::
+
+
+- `for x, y in trainloader:`: This inner loop iterates over batches of data from the `trainloader`. Each iteration provides a batch of input (`x`) and target (`y`) tensors.
+
+- `yhat = mdl(x)`: This line computes the model's predictions (`yhat`) given the input (`x`) using the forward pass of the model.
+
+- `loss = criterion(yhat, y)`: This calculates the loss using the mean squared error (MSE) criterion. The difference between the predicted values (`yhat`) and the actual target values (`y`) is computed and squared, and the mean of these squared differences is taken.
+
+- `cost.append(loss)`: The calculated loss for the current batch is appended to the `cost` list. This allows you to track the change in loss during training.
+
+- `optimizer.zero_grad()`: This resets the gradients of the model parameters to zero. Gradients accumulate by default in PyTorch, so it's necessary to clear them before computing new gradients.
+
+- `loss.backward()`: This computes the gradients of the model parameters with respect to the loss using backpropagation.
+
+- `optimizer.step()`: This updates the model parameters using the optimizer. The optimizer uses the computed gradients to perform a step in the direction that minimizes the loss.
+
+## Linear Regression with Multiple Outputs
+
+![Linear Regression with Multiple Outputs](/images/LR_MultipleOutput.png){height=500 fig-align="left"}
+
+
+$$\mathbf{y}_{nxk} = \mathbf{X}_{nxm}\mathbf{W}_{mxk} + \mathbf{b}_{1xk}$$
+
+```{python}
+torch.manual_seed(1)
+mdl = Linear(in_features=2,out_features=2)
+list(mdl.parameters())
+X = torch.rand(size=(3,2))
+print(mdl(X))
+```
+
+$$ L(\mathbf{w,b}) =  \frac{1}{n}\sum_{i = 1}^n \left({||y^i - \mathbf{x^iw}+b}||\right)^2 $$
+
+
+## Logistic Regression
+
+
+![Logistic Regression](/images/LogisticRegression.png){height=500 fig-align="left"}
+
+
+$$\hat{z}^i =  w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b$$
+
+$$a^i = \frac{1}{1 + e^{z^i}}$$
+
+$$
+y^i = \begin{cases} 
+1 & \text{if } a^i > 0.5 \\
+0 & \text{if } a^i \leq 0.5
+\end{cases}
+$$
+
+## Logistic Regression in PyTorch
+
+
+```{python}
+class LogisticRegression(nn.Module):
+    def __init__(self, input_size):
+        super(LogisticRegression, self).__init__()
+        self.linear = nn.Linear(input_size, 1)
+
+    def forward(self, x):
+        z = self.linear(x)
+        a = torch.sigmoid(z)
+        return a
+```
+
+
+- `self.linear = nn.Linear(input_size, 1)`: This line creates a linear layer (`nn.Linear`) as a member of the class. It represents the linear transformation (weight * input + bias) with `input_size` input features and 1 output feature, which is typical for logistic regression.
+
+
+- `z = self.linear(x)`: This line applies the linear transformation to the input `x` using the weights and biases defined in the `self.linear` layer. The result is stored in `z`.
+
+- `a = torch.sigmoid(z)`: The logistic sigmoid function (`torch.sigmoid`) is applied to the linear output `z`. This operation squashes the values between 0 and 1, which is common in logistic regression, providing the probability of belonging to the positive class.
+
+
+## Binary Cross-entropy
+
+Binary Cross-Entropy, often referred to as log loss, is a loss function commonly used in binary classification problems. It measures the difference between the true binary labels and the predicted probabilities for a binary classification task. The formula for binary cross-entropy for a single observation is:
+
+$$L(y, \hat{y}) = - (y \cdot \log(\hat{y}) + (1 - y) \cdot \log(1 - \hat{y}))$$
+
+
+- $L(y, \hat{y})$: Binary cross-entropy loss for a single observation.
+- $y$: The true label (ground truth), which is either 0 or 1.
+- $\hat{y}$: The predicted probability that the instance belongs to class 1.
+
+## Logistic Regression : PyTorch
+
+
+```{python}
+data = Data()
+criterion = nn.BCELoss()
+trainloader = DataLoader(dataset=data, batch_size=2)
+mdl = LR(input_size=2,output_size=1)
+optimizer = optim.SGD(mdl.parameters(), lr = 0.1)
+```
