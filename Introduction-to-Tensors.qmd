@@ -1,7 +1,6 @@
 ---
 title: "Untitled"
-format: html
-embed-resources: true
+format: revealjs
 execute: 
   eval: false
 ---
