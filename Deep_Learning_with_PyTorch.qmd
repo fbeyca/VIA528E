@@ -1,0 +1,200 @@
+---
+title: "Untitled"
+format: 
+    revealjs:
+        width: 1920
+        height: 1080
+execute: 
+  echo: true
+  eval: true
+
+embed-resources: true
+---
+
+## Activation Functions
+
+### Sigmoid Activation Function
+
+$$\sigma(x) = \frac{1}{1 + \exp(-x)}$$
+
+```{python}
+#| echo: false
+#| fig-align: center
+
+import torch
+import matplotlib.pyplot as plt
+
+
+x = torch.linspace(-10,10,100)
+y = torch.nn.Sigmoid()(x)
+
+plt.plot(x.numpy(), y.numpy())
+plt.grid()
+```
+
+---
+
+### TANH Activation Function
+
+
+$$\tanh(x) = \frac{\exp(x) - exp(-x)}{\exp(x) + \exp(-x)}$$
+
+```{python}
+#| echo: false
+#| fig-align: center
+
+import torch
+import matplotlib.pyplot as plt
+
+
+x = torch.linspace(-10,10,100)
+y = torch.nn.Tanh()(x)
+
+plt.plot(x.numpy(), y.numpy())
+plt.grid()
+```
+
+--- 
+
+### RELU
+
+$$
+relu(x) = \begin{cases}
+0 & \text{if } x < 0 \\
+x & \text{if } x \ge 0
+\end{cases}
+$$
+
+```{python}
+#| echo: false
+#| fig-align: center
+
+import torch
+import matplotlib.pyplot as plt
+
+
+x = torch.linspace(-10,10,100)
+y = torch.nn.ReLU()(x)
+
+plt.plot(x.numpy(), y.numpy())
+plt.grid()
+```
+
+## Deep Networks
+
+![Multi Layer Perceptron](/images/MLP.png){height=500 fig-align="left"}
+
+
+```{python}
+import torch.nn as nn
+
+class Net(nn.Module):
+    
+    # Constructor
+    def __init__(self, D_in, H1, H2, D_out):
+        super(Net, self).__init__()
+        self.linear1 = nn.Linear(D_in, H1)
+        self.linear2 = nn.Linear(H1, H2)
+        self.linear3 = nn.Linear(H2, D_out)
+    
+    # Prediction
+    def forward(self, x):
+        x = torch.tanh(self.linear1(x))
+        x = torch.tanh(self.linear2(x))
+        x = self.linear3(x)
+        return x
+```
+
+## Deeper Networks
+
+- The `nn.ModuleList` class in PyTorch provides a convenient way to automate the process of creating a DNN with an arbitrary number of layers.
+- To use `nn.ModuleList`, we first create a list of the layer sizes. 
+
+```{python}
+class Net(nn.Module):
+    def __init__(self, Layers):
+        super(Net, self).__init__()
+        self.hidden = nn.ModuleList()
+        for in_size, out_size in zip(Layers[:-1], Layers[1:]):
+            self.hidden.append(nn.Linear(in_size, out_size))
+    
+    def forward(self, x):
+        L = len(self.hidden)
+        for i, layer in enumerate(self.hidden):
+            x = layer(x)
+            if i < L-1:
+                x = torch.relu(x)
+        return x
+```
+
+## Dropout
+
+- It involves randomly dropping out (deactivating) a certain percentage of neurons during training.
+- Dropout is a regularization technique used to prevent overfitting in deep neural networks.
+
+
+```{python}
+import torch
+import torch.nn as nn
+
+class Net(nn.Module):
+    def __init__(self, p):
+        super(Net, self).__init__()
+        self.dropout = nn.Dropout(p)
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, output_size)
+        
+    def forward(self, x):
+        x = self.dropout(x)
+        x = self.fc1(x)
+        x = self.dropout(x)
+        x = self.fc2(x)
+        return x
+```
+
+## Weight Initialization
+
+- Weight initialization is a crucial step in training neural networks.
+- Proper initialization can help improve convergence, prevent vanishing/exploding gradients, and enhance overall performance.
+- Random initialization breaks symmetry among neurons.
+- Prevents all neurons from learning the same features and promotes diverse representations.
+
+
+## Uniform Initialization
+
+Initialize weights by sampling from a uniform distribution.
+
+
+```{python}
+tensor = nn.Linear(in_features=10, out_features=5)  # Example linear layer
+nn.init.uniform_(tensor.weight, a=-1, b=1)
+```
+
+## Xavier Initialization
+
+
+$w \sim \mathcal{U}\left[ -\sqrt{\frac{6}{f_{in} + f_{out}}}, \sqrt{\frac{6}{f_{in} + f_{out}}} \right]$
+
+where:
+
+* $w$ represents the weight
+* $\mathcal{U}$ denotes the uniform distribution
+* $f_{in}$ is the number of incoming connections (fan-in)
+* $f_{out}$ is the number of outgoing connections (fan-out)
+
+
+```{python}
+tensor = nn.Linear(in_features=10, out_features=5)  # Example linear layer
+nn.init.xavier_uniform_(tensor.weight)
+```
+
+
+## He Initialization
+
+
+$w \sim \mathcal{N}\left(0,  -\sqrt{\frac{2}{f_{in}}}\right)$
+
+```{python}
+tensor = nn.Linear(in_features=10, out_features=5)  # Example linear layer
+nn.init.kaiming_uniform_(tensor.weight, mode='fan_in', nonlinearity='relu')
+```
