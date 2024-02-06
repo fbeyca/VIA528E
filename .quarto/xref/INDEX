@@ -11,10 +11,18 @@
   "Introduction_to_Tensors.qmd": {
     "Introduction_to_Tensors.html": "6f41aaff"
   },
+<<<<<<< HEAD
+  "Introduction-to-Tensors.qmd": {
+    "Introduction-to-Tensors.html": "b96bfadb"
+=======
   "Deep Learning for Tabular Data.qmd": {
     "Deep Learning for Tabular Data.html": "e2b758bc"
+<<<<<<< HEAD
   },
   "Deep_Learning_with_PyTorch.qmd": {
     "Deep_Learning_with_PyTorch.html": "d89c54fd"
+=======
+>>>>>>> 2096d82e1dbfb12fd7b5f9e3e3af1157d351d7a3
+>>>>>>> dea7960d86f318087fedecf79df7fc4566605ca9
   }
 }

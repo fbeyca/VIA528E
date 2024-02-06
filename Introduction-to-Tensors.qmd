@@ -1,6 +1,11 @@
 ---
+<<<<<<< HEAD:Introduction-to-Tensors.qmd
+title: "Untitled"
+format: revealjs
+=======
 title: "Introduction to Tensors"
 format: html
+>>>>>>> 2096d82e1dbfb12fd7b5f9e3e3af1157d351d7a3:Introduction_to_Tensors.qmd
 execute: 
   eval: false
 ---

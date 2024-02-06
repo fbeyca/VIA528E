@@ -210,6 +210,104 @@
     "text": "PyTorch example\n\nInitialize Data\n\nimport torch\nimport matplotlib.pyplot as plt\n\nw = torch.tensor(-5.0, requires_grad=True)\nb = torch.tensor(0.0, requires_grad=True)\nX = torch.linspace(-3,3,steps = 10).view(-1,1)\ny = -3 * X + 2 + torch.randn(size = X.size())\n\nplt.plot(X.numpy(), y.numpy(),\"ob\")\nplt.grid()\n\n\n\nPerform Prediction\n\ndef forward(x):\n    return w*x + b\n\ndef criterion(yhat, y):\n    return torch.mean((yhat-y)**2)\n\nypred = forward(X)\nprint(criterion(ypred, y))\n\nplt.plot(X.numpy(), y.numpy(),\"ob\")\nplt.plot(X.numpy(), ypred.data.numpy(),\"-r\")\nplt.grid()\n\n\n\nGradient Descent\n\nlr = 0.1\ncost = []\nfor i in range(10):\n    ypred = forward(X)\n    loss = criterion(ypred, y)\n    loss.backward()\n    w.data = w.data - lr*w.grad.data\n    b.data = b.data - lr*b.grad.data\n    w.grad.data.zero_()\n    b.grad.data.zero_()\n    cost.append(loss.item())\n\nprint(loss)\nprint(w.grad)\nprint(b.grad)\nplt.plot(X.numpy(), y.numpy(),\"ob\")\nplt.plot(X.numpy(), ypred.data.numpy(),\"-r\")\nplt.grid()\n\nplt.figure()\nplt.plot(cost, \"-*b\")\nplt.grid()\nplt.xlabel(\"Iteration\")\nplt.ylabel(\"Loss value\")\n\n\n\nStochastic Gradient Descent\n\nlr = 0.01\ncost = []\nfor i in range(10):\n    total = 0 \n    for x_,y_ in zip(X,y):\n        ypred = forward(x_)\n        loss = criterion(ypred, y_)\n        loss.backward()\n        w.data = w.data - lr*w.grad.data\n        b.data = b.data - lr*b.grad.data\n        w.grad.data.zero_()\n        b.grad.data.zero_()\n        total += loss.item()\n    cost.append(total)\nprint(loss)\nprint(w.grad)\nprint(b.grad)\n\nplt.figure()\nplt.plot(cost, \"-*b\")\nplt.grid()\nplt.xlabel(\"Iteration\")\nplt.ylabel(\"Loss value\")\n\n\n\nDataset Loader Module\n\nfrom torch.utils.data import Dataset, DataLoader\n\nclass Data(Dataset):\n    def __init__(self, X, y):\n        self.x = X\n        self.y = y\n        self.len = X.shape[0]\n    \n    def __getitem__(self, index):\n        return self.x[index], self.y[index]\n\n    def __len__(self):\n        return self.len\n\ndataset = Data(X,y)\nx,y = dataset[:3]\nprint(x)\nprint(y)\n\n\n\nMiniBatch Gradient Descent\n\ntrainloader = DataLoader(dataset=dataset, batch_size=5)\nlr = 0.1\ncost = []\nfor i in range(10):\n    total = 0 \n    for x_,y_ in trainloader:\n        ypred = forward(x_)\n        loss = criterion(ypred, y_)\n        loss.backward()\n        w.data = w.data - lr*w.grad.data\n        b.data = b.data - lr*b.grad.data\n        w.grad.data.zero_()\n        b.grad.data.zero_()\n        total += loss.item()\n    cost.append(total)\nprint(loss)\nprint(w.grad)\nprint(b.grad)\n\n\nplt.figure()\nplt.plot(cost, \"-*b\")\nplt.grid()\nplt.xlabel(\"Iteration\")\nplt.ylabel(\"Loss value\")"
   },
   {
+<<<<<<< HEAD
+    "objectID": "Introduction-to-Tensors.html",
+    "href": "Introduction-to-Tensors.html",
+    "title": "Untitled",
+    "section": "",
+    "text": "In the context of mathematics, physics, and computer science, a tensor is a mathematical object that generalizes the concept of vectors and matrices. Tensors can be thought of as multi-dimensional arrays or data structures that represent data in a way that is suitable for certain operations.\n\nA tensor’s order (or rank) defines the number of dimensions it has. For example:\n\nA scalar (0th-order tensor) is a single value.\nA vector (1st-order tensor) is an array of values.\nA matrix (2nd-order tensor) is a 2D array of values.\nTensors with three or more dimensions are higher-order tensors."
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#tensors",
+    "href": "Introduction-to-Tensors.html#tensors",
+    "title": "Untitled",
+    "section": "Tensors",
+    "text": "Tensors\nIn the context of mathematics, physics, and computer science, a tensor is a mathematical object that generalizes the concept of vectors and matrices. Tensors can be thought of as multi-dimensional arrays or data structures that represent data in a way that is suitable for certain operations.\n\nA tensor’s order (or rank) defines the number of dimensions it has. For example:\n\nA scalar (0th-order tensor) is a single value.\nA vector (1st-order tensor) is an array of values.\nA matrix (2nd-order tensor) is a 2D array of values.\nTensors with three or more dimensions are higher-order tensors."
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#derivatives",
+    "href": "Introduction-to-Tensors.html#derivatives",
+    "title": "Untitled",
+    "section": "Derivatives",
+    "text": "Derivatives\n\n\\(y = f(x = 2) = x ^ 2\\)\n\\(\\frac{d}{dx}f(x = 2) = 2x = 4\\)"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#partial-derivatives",
+    "href": "Introduction-to-Tensors.html#partial-derivatives",
+    "title": "Untitled",
+    "section": "Partial Derivatives",
+    "text": "Partial Derivatives\n\n\\(y = f(u,v) = uv + u^2\\)\n\\(\\frac{d}{du}f(u,v) = v + 2u\\)\n\\(\\frac{d}{dv}f(u,v) = u\\)"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#linear-regression-problem-simple-linear-regression",
+    "href": "Introduction-to-Tensors.html#linear-regression-problem-simple-linear-regression",
+    "title": "Untitled",
+    "section": "Linear Regression Problem (Simple Linear Regression)",
+    "text": "Linear Regression Problem (Simple Linear Regression)\n\nLinear regression is a supervised learning algorithm used for predicting a continuous outcome.\nIt assumes a linear relationship between the independent variable(s) and the dependent variable.\nThe linear regression equation: \\(y = mx + b\\), where \\(m\\) is the slope and \\(b\\) is the intercept."
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#custom-model",
+    "href": "Introduction-to-Tensors.html#custom-model",
+    "title": "Untitled",
+    "section": "Custom Model",
+    "text": "Custom Model\nThe provided code is a simple implementation of linear regression using PyTorch. Let’s break down the code step by step:\nHere, a class named LR (Linear Regression) is defined, which is a subclass of nn.Module. In PyTorch, neural network models are typically defined as classes that inherit from nn.Module. The __init__ method is used to initialize the model.\n\nin_size: Specifies the size of the input features (number of input neurons).\nout_size: Specifies the size of the output (number of output neurons).\n\nInside the __init__ method:\n\nsuper(LR, self).__init__() calls the constructor of the parent class (nn.Module) to initialize the module.\nself.linear = nn.Linear(in_size, out_size) creates a linear layer. The nn.Linear module represents a linear transformation, which includes weights and biases. It takes in_size as the number of input features and out_size as the number of output features.\n\nThe forward method defines the forward pass of the model. In PyTorch, the forward method is where you specify how input data should be passed through the network. Here:\n\nx is the input data.\nself.linear(x) applies the linear transformation to the input, which essentially computes (wx + b), where (w) is the weight matrix and (b) is the bias vector.\nThe result is stored in the variable out.\nThe method returns out, which represents the output of the linear regression model."
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#training-the-model",
+    "href": "Introduction-to-Tensors.html#training-the-model",
+    "title": "Untitled",
+    "section": "Training the Model",
+    "text": "Training the Model\n\n\\(D = {(x_1, y_1), ... , (x_N, y_N)}\\)\n\\(\\hat{y} = wx + b\\)"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#gradient-descent",
+    "href": "Introduction-to-Tensors.html#gradient-descent",
+    "title": "Untitled",
+    "section": "Gradient Descent",
+    "text": "Gradient Descent"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#gradient-descent-algorithm",
+    "href": "Introduction-to-Tensors.html#gradient-descent-algorithm",
+    "title": "Untitled",
+    "section": "Gradient Descent Algorithm",
+    "text": "Gradient Descent Algorithm\n\\[ L =  \\frac{1}{2n}\\sum_{i = 1}^n \\left({y^i - \\hat{y}^i}\\right)^2 \\]"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#gradient-descent-algorithm-1",
+    "href": "Introduction-to-Tensors.html#gradient-descent-algorithm-1",
+    "title": "Untitled",
+    "section": "Gradient Descent Algorithm",
+    "text": "Gradient Descent Algorithm\n\\[\\beta^{\\text{new}} = \\beta^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta}\\]\n\\[\\begin{aligned}\n\n\\frac{\\partial L}{\\partial \\beta_1} & = \\frac{\\partial}{\\partial \\beta_1} \\frac{1}{2n}\\sum_{i = 1}^n \\left({y^i - \\hat{y}^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_1}  \\left({y^i - \\hat{y}^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_1}  \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right)^2 \\\\\n\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#taking-derivatives",
+    "href": "Introduction-to-Tensors.html#taking-derivatives",
+    "title": "Untitled",
+    "section": "Taking Derivatives",
+    "text": "Taking Derivatives\n\\[\\begin{aligned}\n\n\\frac{\\partial L}{\\partial \\beta_1} & = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_1}  \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n} * 2 \\sum_{i = 1}^n \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right) \\left({-x^i}\\right) \\\\\n\n& = \\frac{1}{n} \\sum_{i = 1}^n \\left({e^i}\\right) \\left({-x^i}\\right) \\\\\n\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#taking-derivatives-1",
+    "href": "Introduction-to-Tensors.html#taking-derivatives-1",
+    "title": "Untitled",
+    "section": "Taking Derivatives",
+    "text": "Taking Derivatives\n\\[\\begin{aligned}\n\n\\frac{\\partial L}{\\partial \\beta_0} & = \\frac{1}{2n}\\sum_{i = 1}^n \\frac{\\partial}{\\partial \\beta_0}  \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right)^2 \\\\\n\n& = \\frac{1}{2n} * 2 \\sum_{i = 1}^n \\left({y^i - \\beta_0 - \\beta_1 x^i}\\right) \\left({-1}\\right) \\\\\n\n& = \\frac{1}{n} \\sum_{i = 1}^n \\left({e^i}\\right) \\left({-1}\\right) \\\\\n\n\\end{aligned}\\]"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#updating-derivatives",
+    "href": "Introduction-to-Tensors.html#updating-derivatives",
+    "title": "Untitled",
+    "section": "Updating Derivatives",
+    "text": "Updating Derivatives\n\\[\\beta^{\\text{new}} = \\beta^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta}\\]\n\\[\\beta_1^{\\text{new}} = \\beta_1^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta_1}\\]\n\\[\\beta_0^{\\text{new}} = \\beta_0^{\\text{old}} - \\alpha\\frac{\\partial L}{\\partial \\beta_0}\\]"
+  },
+  {
+    "objectID": "Introduction-to-Tensors.html#pytorch-example",
+    "href": "Introduction-to-Tensors.html#pytorch-example",
+    "title": "Untitled",
+    "section": "PyTorch example",
+    "text": "PyTorch example\nInitialize Data\nPerform Prediction\nGradient Descent\nStochastic Gradient Descent\nDataset Loader Module\nMiniBatch Gradient Descent"
+=======
     "objectID": "Deep Learning for Tabular Data.html#multiple-linear-regression",
     "href": "Deep Learning for Tabular Data.html#multiple-linear-regression",
     "title": "Deep Learning for Tabular Data",
@@ -313,6 +411,7 @@
     "title": "Deep Learning for Tabular Data",
     "section": "Logistic Regression",
     "text": "Logistic Regression\n\n\n\nLogistic Regression\n\n\n\\[\\hat{z}^i =  w_1x_1^i + w_2x_2^i + ... + w_kx_k^i + b\\]\n\\[a^i = \\frac{1}{1 + e^{z^i}}\\]\n\\[\ny^i = \\begin{cases}\n1 & \\text{if } a^i &gt; 0.5 \\\\\n0 & \\text{if } a^i \\leq 0.5\n\\end{cases}\n\\]"
+<<<<<<< HEAD
   },
   {
     "objectID": "Deep_Learning_with_PyTorch.html",
@@ -383,5 +482,8 @@
     "title": "Untitled",
     "section": "He Initialization",
     "text": "He Initialization\n\\(w \\sim \\mathcal{N}\\left(0, -\\sqrt{\\frac{2}{f_{in}}}\\right)\\)\n\ntensor = nn.Linear(in_features=10, out_features=5)  # Example linear layer\nnn.init.kaiming_uniform_(tensor.weight, mode='fan_in', nonlinearity='relu')\n\nParameter containing:\ntensor([[-0.0321,  0.1310, -0.5187,  0.6252, -0.7461, -0.1692, -0.6839,  0.6301,\n          0.1479,  0.1805],\n        [ 0.5695, -0.3742, -0.4610, -0.3234, -0.3796, -0.2038, -0.3788, -0.0462,\n         -0.1786,  0.0951],\n        [-0.1256, -0.3321,  0.2212,  0.6909, -0.0901, -0.7604,  0.4656,  0.7615,\n         -0.3997, -0.7632],\n        [-0.6621,  0.1149, -0.6051, -0.5598, -0.0878, -0.7648, -0.4447,  0.4021,\n          0.2565, -0.0673],\n        [ 0.2964, -0.6447, -0.2196,  0.0640, -0.6823, -0.1736, -0.1809,  0.2535,\n         -0.6424,  0.7558]], requires_grad=True)"
+=======
+>>>>>>> 2096d82e1dbfb12fd7b5f9e3e3af1157d351d7a3
+>>>>>>> dea7960d86f318087fedecf79df7fc4566605ca9
   }
 ]
