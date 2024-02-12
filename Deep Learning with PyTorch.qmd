@@ -1,0 +1,13 @@
+---
+title: "Deep Learning with PyTorch"
+format: 
+    revealjs:
+        width: 1920
+        height: 1080
+execute: 
+  echo: true
+  eval: true
+
+embed-resources: true
+---
+
