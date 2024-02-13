@@ -173,7 +173,7 @@ nn.init.uniform_(tensor.weight, a=-1, b=1)
 ## Xavier Initialization
 
 
-$w \sim \mathcal{U}\left[ -\sqrt{\frac{6}{f_{in} + f_{out}}}, \sqrt{\frac{6}{f_{in} + f_{out}}} \right]$
+$$w \sim \mathcal{U}\left[ -\sqrt{\frac{6}{f_{in} + f_{out}}}, \sqrt{\frac{6}{f_{in} + f_{out}}} \right]$$
 
 where:
 
@@ -184,7 +184,7 @@ where:
 
 
 ```{python}
-tensor = nn.Linear(in_features=10, out_features=5)  # Example linear layer
+tensor = nn.Linear(in_features=10, out_features=5)  
 nn.init.xavier_uniform_(tensor.weight)
 ```
 
@@ -192,9 +192,9 @@ nn.init.xavier_uniform_(tensor.weight)
 ## He Initialization
 
 
-$w \sim \mathcal{N}\left(0,  -\sqrt{\frac{2}{f_{in}}}\right)$
+$$w \sim \mathcal{N}\left(0,  -\sqrt{\frac{2}{f_{in}}}\right)$$
 
 ```{python}
-tensor = nn.Linear(in_features=10, out_features=5)  # Example linear layer
+tensor = nn.Linear(in_features=10, out_features=5)  
 nn.init.kaiming_uniform_(tensor.weight, mode='fan_in', nonlinearity='relu')
 ```
