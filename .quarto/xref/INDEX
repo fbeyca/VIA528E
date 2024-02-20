@@ -1,28 +1,17 @@
 {
-  "about.qmd": {
-    "about.html": "39126349"
+  "Convolutional Neural Networks.qmd": {
+    "Convolutional Neural Networks.html": "90a03798"
   },
-  "index.qmd": {
-    "index.html": "22441ba5"
-  },
-  "Introduction to Tensors.qmd": {
-    "Introduction to Tensors.html": "440b1a0f"
-  },
-  "Introduction_to_Tensors.qmd": {
-    "Introduction_to_Tensors.html": "6f41aaff"
-  },
-<<<<<<< HEAD
-  "Introduction-to-Tensors.qmd": {
-    "Introduction-to-Tensors.html": "b96bfadb"
-=======
-  "Deep Learning for Tabular Data.qmd": {
-    "Deep Learning for Tabular Data.html": "e2b758bc"
-<<<<<<< HEAD
+  "Deep Learning with PyTorch.qmd": {
+    "Deep Learning with PyTorch.html": "d840247e"
   },
   "Deep_Learning_with_PyTorch.qmd": {
-    "Deep_Learning_with_PyTorch.html": "d89c54fd"
-=======
->>>>>>> 2096d82e1dbfb12fd7b5f9e3e3af1157d351d7a3
->>>>>>> dea7960d86f318087fedecf79df7fc4566605ca9
+    "Deep_Learning_with_PyTorch.html": "5ebd19c2"
+  },
+  "index.qmd": {
+    "index.html": "87ec4a60"
+  },
+  "Introduction-to-Tensors.qmd": {
+    "Introduction-to-Tensors.html": "678951b2"
   }
 }
