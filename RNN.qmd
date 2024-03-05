@@ -27,7 +27,7 @@ embed-resources: true
 * Imagine an RNN "unfolded" over time. This reveals multiple copies of the same network structure, each sharing the same weights and biases.
 * Information flows through the network one step at a time, with the hidden state connecting corresponding layers across these copies.
 
-![](/images/RNN.png)
+![](https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/RNN-unrolled.png)
 
 
 **4. Types of RNNs**
@@ -72,13 +72,50 @@ $$y_t = g(W_{oh} * h_t + b_o)$$
 
 * `W_oh` and `b_o` are weight matrices for the output layer, and `g` is an activation function (e.g., softmax for classification).
 
-![](/images/RNN_rolled.png)
+![](https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/LSTM3-SimpleRNN.png)
 
 
 **Limitations:**
 
 * **Vanishing Gradients:** As error is backpropagated through long sequences, gradients can become very small or vanish entirely, making it difficult for the network to learn long-term dependencies. This is a significant drawback of vanilla RNNs.
 * **Exploding Gradients:** In rare cases, gradients can explode and become very large, leading to unstable training and divergence.
+
+
+### LSTM
+
+**Introduction**
+
+* **Challenge:** Vanilla RNNs suffer from vanishing gradients, hindering learning in long sequences.
+* **Solution:** **Long Short-Term Memory (LSTM)** networks address this issue by introducing gating mechanisms that control the flow of information within the network.
+
+**Gated Memory**
+
+* LSTMs introduce gates that selectively allow information to pass through and update the cell state, the core memory component of an LSTM unit.
+* These gates include:
+    * **Forget gate:** Decides which information from the previous cell state (`$C_{(t-1)}$`) to forget.
+    * **Input gate:** Determines what new information from the current input (`$x_t$`) to store in the cell state.
+    * **Output gate:** Controls what information from the current cell state (`$C_t$`) to output (`$h_t$`).
+
+![](https://colah.github.io/posts/2015-08-Understanding-LSTMs/img/LSTM3-chain.png)
+
+**LSTM Unit Architecture**
+
+* An LSTM unit consists of several key components:
+    * **Cell state ($C_t$):** Carries information across time steps.
+    * **Hidden state ($h_t$):** Output of the LSTM unit, similar to vanilla RNNs.
+    * **Forget gate ($f_t$):** Composed of a sigmoid function and determines what to forget from the previous cell state.
+    * **Input gate ($i_t$):** Composed of a sigmoid function and decides which information from the current input to store.
+    * **Output gate ($o_t$):** Composed of a sigmoid function and controls what information from the current cell state to output.
+
+**Advantages of LSTMs**
+
+* **Effective for long sequences:** Gating mechanisms address vanishing gradients, allowing LSTMs to learn long-term dependencies.
+
+**Disadvantages of LSTMs**
+
+* **Increased complexity:** LSTMs are more complex than vanilla RNNs, requiring more computational resources for training.
+* **Potential for overfitting:** Careful selection of hyperparameters and regularization techniques are crucial to avoid overfitting.
+
 
 
 
