@@ -1,0 +1,88 @@
+---
+title: "Recurrent Neural Networks"
+format: html
+
+execute: 
+  echo: true
+  eval: true
+
+embed-resources: true
+---
+
+## Lecture Notes: Recurrent Neural Networks (RNNs)
+
+**1. Introduction**
+
+* **Challenge:** Traditional neural networks struggle with sequential data, as they lack the ability to remember past inputs.
+* **Solution:** Recurrent Neural Networks (RNNs) are a special type of neural network designed to handle sequential data by incorporating a concept of memory.
+
+**2. Core Idea: The Hidden State**
+
+* Unlike traditional feedforward networks, RNNs have a hidden layer that acts as a **memory** state.
+* This hidden state, denoted by `h_t`, captures information from previous inputs and is used alongside the current input (`x_t`) to determine the current output (`y_t`) and update the hidden state for the next time step (`h_(t+1)`).
+* This allows RNNs to learn dependencies between elements in a sequence.
+
+**3. Unfolding an RNN**
+
+* Imagine an RNN "unfolded" over time. This reveals multiple copies of the same network structure, each sharing the same weights and biases.
+* Information flows through the network one step at a time, with the hidden state connecting corresponding layers across these copies.
+
+![](/images/RNN.png)
+
+
+**4. Types of RNNs**
+
+* **Vanilla RNN:** The simplest RNN, but prone to vanishing gradients for long sequences.
+* **Long Short-Term Memory (LSTM):** Introduces gating mechanisms to address vanishing gradients and learn long-term dependencies.
+* **Gated Recurrent Unit (GRU):** Similar to LSTM but with a simpler architecture, making it computationally efficient.
+
+
+## Memoryless models for sequences 
+
+**Autoregressive models**
+Predict the next term in a sequence from a fixed number of previous terms using “delay taps”.
+
+
+**Feed-forward neural nets**
+These generalize autoregressive models by using one or more layers of non-linear hidden units.
+
+
+## Sequence Models
+
+### Vanilla RNN
+
+**Vanilla RNNs**, also known as **Simple RNNs** or **Elman RNNs**, are the foundational building block of recurrent neural networks. While they have limitations compared to their more advanced counterparts like LSTMs and GRUs, understanding them is crucial for grasping the core concepts of RNNs.
+
+**Architecture:**
+
+* A vanilla RNN consists of an input layer, a hidden layer, and an output layer.
+* The hidden layer holds the crucial **memory state** (`h_t`), which is updated at each time step based on the current input (`x_t`) and the previous hidden state (`h_(t-1)`).
+* The update function for the hidden state typically involves a tanh or sigmoid activation function:
+
+
+$$h_t = f(W_{hh} * h_{(t-1)} + W_{ix} * x_t + b_h)$$
+
+
+* `$W_{hh}$` and `$W_{ix}$` are weight matrices, and `$b_h$` is a bias vector.
+* The output at each time step (`$y_t$`) is calculated based on the current hidden state:
+
+
+$$y_t = g(W_{oh} * h_t + b_o)$$
+
+
+* `W_oh` and `b_o` are weight matrices for the output layer, and `g` is an activation function (e.g., softmax for classification).
+
+![](/images/RNN_rolled.png)
+
+
+**Limitations:**
+
+* **Vanishing Gradients:** As error is backpropagated through long sequences, gradients can become very small or vanish entirely, making it difficult for the network to learn long-term dependencies. This is a significant drawback of vanilla RNNs.
+* **Exploding Gradients:** In rare cases, gradients can explode and become very large, leading to unstable training and divergence.
+
+
+
+
+
+
+

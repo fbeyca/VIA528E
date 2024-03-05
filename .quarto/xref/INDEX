@@ -13,5 +13,8 @@
   },
   "Introduction-to-Tensors.qmd": {
     "Introduction-to-Tensors.html": "678951b2"
+  },
+  "RNN.qmd": {
+    "RNN.html": "3ee16794"
   }
 }

@@ -1,0 +1,477 @@
+---
+title: "Introduction to Tensors"
+format: html
+execute: 
+  eval: true
+
+embed-resources: true
+---
+
+## Tensors
+
+In the context of mathematics, physics, and computer science, a tensor is a mathematical object that generalizes the concept of vectors and matrices. Tensors can be thought of as multi-dimensional arrays or data structures that represent data in a way that is suitable for certain operations.
+
+
+- A tensor's order (or rank) defines the number of dimensions it has. For example:
+    - A scalar (0th-order tensor) is a single value.
+    - A vector (1st-order tensor) is an array of values.
+    - A matrix (2nd-order tensor) is a 2D array of values.
+    - Tensors with three or more dimensions are higher-order tensors.
+
+## Derivatives
+
+
+- $y = f(x = 2) = x ^ 2$
+- $\frac{d}{dx}f(x = 2) = 2x = 4$
+
+```{python}
+import torch
+
+x = torch.tensor(2.0, requires_grad=True)
+y = x ** 2
+y.backward()
+print(x.grad)
+```
+
+## Partial Derivatives
+
+- $y = f(u,v) = uv + u^2$
+- $\frac{d}{du}f(u,v) = v + 2u$
+- $\frac{d}{dv}f(u,v) = u$
+
+
+```{python}
+
+u = torch.tensor(1.0, requires_grad=True)
+v = torch.tensor(2.0, requires_grad=True)
+y = u*v + u **2
+y.backward()
+print(u.grad)
+print(v.grad)
+
+```
+
+## Linear Regression Problem (Simple Linear Regression)
+   - Linear regression is a supervised learning algorithm used for predicting a continuous outcome.
+   - It assumes a linear relationship between the independent variable(s) and the dependent variable.
+   - The linear regression equation: $y = mx + b$, where $m$ is the slope and $b$ is the intercept.
+
+```{python}
+from torch.nn import Linear
+
+torch.manual_seed(1)
+mdl = Linear(in_features=1, out_features=1)
+print(list(mdl.parameters()))
+x = torch.tensor([[0.0]])
+yhat = mdl(x)
+print(yhat)
+
+```
+
+
+- `mdl = Linear(in_features=1, out_features=1)`: Creates a linear model with one input feature (`in_features=1`) and one output feature (`out_features=1`). This corresponds to a simple linear regression model.
+
+- `yhat = mdl(x)`: Computes the output of the model (`yhat`) for the input `x`. Since the model is just initialized, `yhat` will be a random value.
+
+
+## Custom Model
+
+
+```{python}
+import torch.nn as nn
+
+class LR(nn.Module):
+    def __init__(self, in_size, out_size):
+        super(LR, self).__init__()
+        self.linear = nn.Linear(in_size,out_size)
+    
+    def forward(self, x):
+        out = self.linear(x)
+        return out
+```
+The provided code is a simple implementation of linear regression using PyTorch. Let's break down the code step by step:
+
+Here, a class named `LR` (Linear Regression) is defined, which is a subclass of `nn.Module`. In PyTorch, neural network models are typically defined as classes that inherit from `nn.Module`. The `__init__` method is used to initialize the model.
+
+- `in_size`: Specifies the size of the input features (number of input neurons).
+- `out_size`: Specifies the size of the output (number of output neurons).
+
+Inside the `__init__` method:
+
+- `super(LR, self).__init__()` calls the constructor of the parent class (`nn.Module`) to initialize the module.
+- `self.linear = nn.Linear(in_size, out_size)` creates a linear layer. The `nn.Linear` module represents a linear transformation, which includes weights and biases. It takes `in_size` as the number of input features and `out_size` as the number of output features.
+
+The `forward` method defines the forward pass of the model. In PyTorch, the `forward` method is where you specify how input data should be passed through the network. Here:
+
+- `x` is the input data.
+- `self.linear(x)` applies the linear transformation to the input, which essentially computes \(wx + b\), where \(w\) is the weight matrix and \(b\) is the bias vector.
+- The result is stored in the variable `out`.
+- The method returns `out`, which represents the output of the linear regression model.
+
+
+```{python}
+lr = LR(1, 1)
+
+X= torch.tensor([[1.0], [2.0], [3.0]])
+
+yhat=lr(X)
+print(yhat)
+```
+
+## Training the Model
+
+- $D = {(x_1, y_1), ... , (x_N, y_N)}$
+- $\hat{y} = wx + b$
+
+## Gradient Descent
+
+## Gradient Descent Algorithm
+
+
+```{python}
+#| echo: false
+
+import matplotlib.pyplot as plt
+import numpy as np
+# Define the quadratic function f(x) = ax^2 + bx + c
+def quadratic_function(x, a, b, c):
+    return a * x**2 + b * x + c
+
+# Define the derivative of the quadratic function
+def derivative_quadratic(x, a, b):
+    return 2 * a * x + b
+
+# Define the coefficients of the quadratic function
+a = 1
+b = -2
+c = 1
+
+# Choose the point (x0, y0) where you want to draw the tangent line
+x0 = 2.5
+y0 = quadratic_function(x0, a, b, c)
+
+# Calculate the slope of the tangent line
+m = derivative_quadratic(x0, a, b)
+
+# Calculate the y-intercept of the tangent line
+b_tangent = y0 - m * x0
+
+# Create a range of x-values for the tangent line
+x_tangent = np.linspace(-1.5, 3.5, 100)
+
+# Calculate the corresponding y-values for the tangent line
+y_tangent = m * x_tangent + b_tangent
+
+# Create a range of x-values for the quadratic function
+x = np.linspace(-1.5, 3.5, 100)
+
+# Calculate y-values for the quadratic function
+y = quadratic_function(x, a, b, c)
+
+# Plot the quadratic function and the tangent line
+plt.plot(x, y, label='Loss Function')
+plt.plot(x_tangent, y_tangent, label='Tangent Line', linestyle='--')
+plt.scatter(x0, y0, color='red', label='Point of Tangency')
+plt.xlabel(r'$\beta$ ')
+plt.ylabel('Loss')
+plt.legend()
+plt.ylim([-1,6.5])
+plt.xticks([])
+plt.yticks([])
+plt.grid()
+plt.show()
+```
+
+
+Gradient descent is an optimization algorithm commonly used in machine learning, including deep learning with PyTorch. Here's a breakdown of how it works:
+
+**Imagine a hilly landscape:**
+
+* The goal is to find the lowest point (minimum) in the landscape.
+* The landscape represents a function, and the y-axis represents the function's output for different input values (x-axis).
+* The lower the output (y-value), the "better" it is in the context of minimizing the function.
+
+$$ L =  \frac{1}{2n}\sum_{i = 1}^n \left({y^i - \hat{y}^i}\right)^2 $$
+
+
+**Gradient descent uses an iterative approach to find the minimum:**
+
+1. **Start at an initial point:** This point could be random or chosen based on some prior knowledge.
+2. **Calculate the gradient:** The gradient points in the direction of the steepest descent. In simpler terms, it tells you which way is "downhill" the fastest from your current position.
+
+\begin{aligned}
+
+\frac{\partial L}{\partial \beta_1} & = \frac{1}{2n}\sum_{i = 1}^n \frac{\partial}{\partial \beta_1}  \left({y^i - \beta_0 - \beta_1 x^i}\right)^2 \\
+
+& = \frac{1}{2n} * 2 \sum_{i = 1}^n \left({y^i - \beta_0 - \beta_1 x^i}\right) \left({-x^i}\right) \\
+
+& = \frac{1}{n} \sum_{i = 1}^n \left({e^i}\right) \left({-x^i}\right) \\
+
+\end{aligned}
+
+\begin{aligned}
+
+\frac{\partial L}{\partial \beta_0} & = \frac{1}{2n}\sum_{i = 1}^n \frac{\partial}{\partial \beta_0}  \left({y^i - \beta_0 - \beta_1 x^i}\right)^2 \\
+
+& = \frac{1}{2n} * 2 \sum_{i = 1}^n \left({y^i - \beta_0 - \beta_1 x^i}\right) \left({-1}\right) \\
+
+& = \frac{1}{n} \sum_{i = 1}^n \left({e^i}\right) \left({-1}\right) \\
+
+\end{aligned}
+
+
+3. **Take a step in the negative direction of the gradient:** By moving in the opposite direction of the steepest descent, you're going downhill towards the minimum.
+
+$$\beta^{\text{new}} = \beta^{\text{old}} - \alpha\frac{\partial L}{\partial \beta}$$
+
+$$\beta_1^{\text{new}} = \beta_1^{\text{old}} - \alpha\frac{\partial L}{\partial \beta_1}$$
+
+$$\beta_0^{\text{new}} = \beta_0^{\text{old}} - \alpha\frac{\partial L}{\partial \beta_0}$$
+
+4. **Repeat steps 2 and 3:** In each iteration, you calculate the gradient at your current position, take a step in the negative direction, and get closer to the minimum.
+
+**Key points to remember:**
+
+* **Learning rate:** The size of the steps you take in the negative direction of the gradient is controlled by a hyperparameter called the learning rate. A small learning rate leads to cautious, smaller steps that might take longer to converge (reach the minimum). A large learning rate can lead to bigger steps that might overshoot the minimum or get stuck in oscillations.
+* **Local vs. global minimum:** Gradient descent typically finds a local minimum, which is the lowest point in the immediate vicinity of the starting point. The function might have multiple local minima, and the starting point can influence which one gradient descent finds.
+
+**Here's how gradient descent relates to training deep learning models in PyTorch:**
+
+* The function being minimized in deep learning is often called the loss function. It measures the discrepancy between the model's predictions and the actual labels.
+* The model's parameters (weights and biases) are like the x-axis values in the landscape analogy.
+* By adjusting the model's parameters based on the calculated gradients of the loss function with respect to these parameters, gradient descent helps the model learn and minimize the loss, leading to better predictions.
+
+
+## PyTorch example
+
+### Initialize Data
+
+Lets set up the data for a simple linear regression problem and plots the data points. The goal of linear regression is to find the best-fitting line (with parameters w and b) that minimizes the difference between the predicted values and the actual values.
+
+```{python}
+import torch
+import matplotlib.pyplot as plt
+
+w = torch.tensor(-5.0, requires_grad=True)
+b = torch.tensor(0.0, requires_grad=True)
+X = torch.linspace(-3,3,steps = 10).view(-1,1)
+y = -3 * X + 2 + torch.randn(size = X.size())
+
+plt.plot(X.numpy(), y.numpy(),"ob")
+plt.grid()
+
+```
+
+### Perform Prediction
+
+First, lets define a forward pass function, computes the predicted values using the forward pass, a loss function, computes mean square error, and plots the input-output pairs along with the predicted values for a simple linear regression model
+
+```{python}
+def forward(x):
+    return w*x + b
+
+def criterion(yhat, y):
+    return torch.mean((yhat-y)**2)
+
+ypred = forward(X)
+print(criterion(ypred, y))
+
+plt.plot(X.numpy(), y.numpy(),"ob")
+plt.plot(X.numpy(), ypred.data.numpy(),"-r")
+plt.grid()
+```
+
+### Gradient Descent
+
+In the following we implement a simple gradient descent optimization loop for training a linear regression model.
+
+```{python}
+lr = 0.1
+cost = []
+for i in range(10):
+    ypred = forward(X)
+    loss = criterion(ypred, y)
+    loss.backward()
+    w.data = w.data - lr*w.grad.data
+    b.data = b.data - lr*b.grad.data
+    w.grad.data.zero_()
+    b.grad.data.zero_()
+    cost.append(loss.item())
+
+print(loss)
+print(w.grad)
+print(b.grad)
+plt.plot(X.numpy(), y.numpy(),"ob")
+plt.plot(X.numpy(), ypred.data.numpy(),"-r")
+plt.grid()
+
+plt.figure()
+plt.plot(cost, "-*b")
+plt.grid()
+plt.xlabel("Iteration")
+plt.ylabel("Loss value")
+```
+
+1. `lr = 0.1`: Defines the learning rate for gradient descent.
+
+2. `cost = []`: Initializes an empty list to store the loss values during training.
+
+3. `for i in range(10):`: Iterates over 10 epochs (or iterations) for training.
+
+4. `ypred = forward(X)`: Computes the predicted values `ypred` for the input `X` using the `forward` function.
+
+5. `loss = criterion(ypred, y)`: Computes the loss value using the mean squared error criterion.
+
+6. `loss.backward()`: Computes the gradients of the loss with respect to `w` and `b` using backpropagation.
+
+7. `w.data = w.data - lr*w.grad.data` and `b.data = b.data - lr*b.grad.data`: Updates the weight `w` and bias `b` parameters using gradient descent.
+
+8. `w.grad.data.zero_()` and `b.grad.data.zero_()`: Manually zeros out the gradients to prevent them from accumulating across iterations.
+
+9. `cost.append(loss.item())`: Appends the current loss value to the `cost` list.
+
+10. After the training loop, it prints the final loss value (`loss`), the gradient of `w` (`w.grad`), and the gradient of `b` (`b.grad`).
+
+11. It then plots the input-output pairs along with the predicted values for the final model and plots the loss values (`cost`) over iterations.
+
+
+### Stochastic Gradient Descent
+
+Stochastic Gradient Descent (SGD) is a variant of the gradient descent optimization algorithm commonly used in machine learning and deep learning. The main difference between SGD and standard gradient descent is that SGD updates the model parameters using a single training example (or a small batch of examples) at a time, rather than the entire dataset.
+
+Here's how SGD works:
+
+1. **Initialize Parameters**: Start by initializing the model parameters (weights and biases) randomly or with some predefined values.
+
+2. **Iterate Over Training Examples**: For each iteration (epoch) of training:
+   - Shuffle the training examples to ensure the order of examples is random.
+   - Iterate over each training example:
+     - Compute the gradient of the loss function with respect to the model parameters using the current training example.
+     - Update the model parameters using the computed gradient and a predefined learning rate.
+
+3. **Repeat Until Convergence**: Continue iterating over the training examples for a fixed number of epochs or until the model converges (i.e., the loss stops decreasing).
+
+
+- **Efficiency**: SGD is computationally more efficient than standard gradient descent because it updates the parameters more frequently (after each training example or small batch).
+- **Stochastic Nature**: Due to its stochastic nature (updating based on random samples), the path to the minimum of the loss function can be noisier compared to batch gradient descent. However, this noise can sometimes help the model escape local minima and find better solutions.
+
+
+
+
+```{python}
+lr = 0.01
+cost = []
+for i in range(10):
+    total = 0 
+    for x_,y_ in zip(X,y):
+        ypred = forward(x_)
+        loss = criterion(ypred, y_)
+        loss.backward()
+        w.data = w.data - lr*w.grad.data
+        b.data = b.data - lr*b.grad.data
+        w.grad.data.zero_()
+        b.grad.data.zero_()
+        total += loss.item()
+    cost.append(total)
+print(loss)
+print(w.grad)
+print(b.grad)
+
+plt.figure()
+plt.plot(cost, "-*b")
+plt.grid()
+plt.xlabel("Iteration")
+plt.ylabel("Loss value")
+```
+
+### MiniBatch Gradient Descent
+
+In practice, mini-batch SGD, which updates the parameters using a small batch of examples instead of a single example, is commonly used as it strikes a balance between the efficiency of SGD and the stability of batch gradient descent.
+
+**Dataset Loader Module**
+
+In PyTorch, `DataLoader` is a convenient and efficient way to load and process data for training and evaluation in PyTorch, providing features like batching, shuffling, and parallel data loading, which are essential for training deep learning models on large datasets. 
+
+1. **Batching**: `DataLoader` allows you to specify a batch size, so you can load and process data in batches. This is useful for efficient memory utilization and faster training.
+
+2. **Shuffling**: `DataLoader` can shuffle the dataset for each epoch, which helps in preventing the model from memorizing the order of the data and can improve generalization.
+
+3. **Parallelism**: `DataLoader` supports multi-process data loading, which can speed up data loading, especially for large datasets.
+
+4. **Customization**: `DataLoader` provides options for customizing the data loading process, such as specifying the number of worker processes for loading data in parallel, and how to handle the last batch if the dataset size is not divisible by the batch size.
+
+5. **Integration with PyTorch Models**: `DataLoader` integrates well with PyTorch's training loop. It can directly feed batches of data to the model during training, making the training process simpler and more efficient.
+
+
+```{python}
+from torch.utils.data import Dataset, DataLoader
+
+class Data(Dataset):
+    def __init__(self, X, y):
+        self.x = X
+        self.y = y
+        self.len = X.shape[0]
+    
+    def __getitem__(self, index):
+        return self.x[index], self.y[index]
+
+    def __len__(self):
+        return self.len
+
+dataset = Data(X,y)
+x,y = dataset[:3]
+print(x)
+print(y)
+```
+
+This code defines a custom PyTorch dataset class (`Data`) to handle a dataset of input-output pairs (`X` and `y`). Here's what each part of the code does:
+
+1. `class Data(Dataset):`: Defines a class `Data` that inherits from `Dataset`, which is a PyTorch class for representing datasets.
+
+2. `def __init__(self, X, y):`: Defines the constructor for the `Data` class, which initializes the dataset with input `X` and output `y`.
+
+3. `self.x = X` and `self.y = y`: Store the input `X` and output `y` in the dataset object.
+
+4. `self.len = X.shape[0]`: Store the length of the dataset (number of samples) in `self.len`. This is used to determine the total number of samples in the dataset.
+
+5. `def __getitem__(self, index):`: Defines the `__getitem__` method, which allows you to retrieve a sample from the dataset given an index.
+
+6. `return self.x[index], self.y[index]`: Returns the input-output pair corresponding to the given index in the dataset.
+
+7. `def __len__(self):`: Defines the `__len__` method, which returns the total number of samples in the dataset.
+
+8. `return self.len`: Returns the length of the dataset.
+
+9. `dataset = Data(X, y)`: Creates an instance of the `Data` class with input `X` and output `y`, effectively creating a dataset object.
+
+
+The following is an example of how we can use `DataLoader` module for training model.
+
+```{python}
+trainloader = DataLoader(dataset=dataset, batch_size=5)
+lr = 0.1
+cost = []
+for i in range(10):
+    total = 0 
+    for x_,y_ in trainloader:
+        ypred = forward(x_)
+        loss = criterion(ypred, y_)
+        loss.backward()
+        w.data = w.data - lr*w.grad.data
+        b.data = b.data - lr*b.grad.data
+        w.grad.data.zero_()
+        b.grad.data.zero_()
+        total += loss.item()
+    cost.append(total)
+print(loss)
+print(w.grad)
+print(b.grad)
+
+
+plt.figure()
+plt.plot(cost, "-*b")
+plt.grid()
+plt.xlabel("Iteration")
+plt.ylabel("Loss value")
+
+```
